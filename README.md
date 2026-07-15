@@ -1,6 +1,6 @@
 # 桌游计分板
 
-一个纯 HTML、CSS、JavaScript 实现的多人桌游累加计分网页。无需构建、无需后端、没有第三方依赖，可以直接托管在 GitHub Pages。
+一个纯 HTML、CSS、JavaScript 实现的多人桌游累加计分网页。无需构建、无需后端、没有第三方依赖，托管在 GitHub Pages。
 
 这是一个纯 Vibe Coding 项目，产品构思、界面设计和代码实现均通过人与 AI 的持续对话协作完成。
 
