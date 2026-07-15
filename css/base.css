@@ -112,7 +112,7 @@ input {
 .brand {
   display: inline-flex;
   min-width: 0;
-  max-width: 100%;
+  max-width: calc(100% - 104px);
   gap: 11px;
   align-items: center;
   padding: 0;
@@ -134,33 +134,58 @@ input {
 
 .brand-mark {
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
   place-items: center;
 }
 
-.brand-mark svg {
-  width: 32px;
-  height: 32px;
-  fill: var(--accent);
-}
-
-.brand-mark path {
-  fill: none;
-  stroke: var(--accent-ink);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
-}
-
-.brand-mark circle {
-  fill: var(--accent-ink);
+.brand-mark img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: contain;
 }
 
 .view {
   width: min(100% - 40px, var(--content));
   margin: 0 auto;
+}
+
+.header-github {
+  display: inline-flex;
+  width: auto;
+  height: 40px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  color: var(--faint);
+  text-decoration: none;
+  transition: 150ms ease;
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
+.header-github:hover {
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--text);
+}
+
+.header-github svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.header-github span {
+  line-height: 1;
 }
 
 .button {
@@ -444,6 +469,25 @@ input {
 
   .site-header {
     height: 66px;
+  }
+
+  .brand {
+    max-width: calc(100% - 48px);
+  }
+
+  .brand-mark,
+  .brand-mark img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .header-github {
+    width: 40px;
+    padding: 0;
+  }
+
+  .header-github span {
+    display: none;
   }
 
   .modal-header,

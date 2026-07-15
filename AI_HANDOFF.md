@@ -82,7 +82,8 @@ site: {
   headerTitle: "A Mirror送给海盗们的桌游计分板",
   shortName: "计分板",
   description: "一个纯Vibe Coding的项目",
-  faviconPath: "/asset/favicon-compressed.png",
+  faviconPath: "asset/favicon-compressed.png",
+  githubUrl: "https://github.com/jahn2007/pointpad",
   themeColor: "#10131a"
 }
 ```
@@ -91,6 +92,10 @@ site: {
 
 - `browserTitle` 只控制浏览器标签页标题。
 - `headerTitle` 只控制网页最上方品牌标题。
+- `faviconPath` 同时控制浏览器图标和标题栏左侧头像。
+- `githubUrl` 控制标题栏右侧 GitHub 图标的跳转地址，留空时隐藏入口。
+- 当前 `favicon-compressed.png` 保留 PNG 透明通道，头像不应再出现白色方形背景。
+- 标题栏头像桌面端为 40px，移动端为 36px。GitHub 入口桌面端显示图标和文字，移动端仅显示图标。
 
 游戏参数：
 
@@ -356,8 +361,8 @@ game: {
 - CSS 使用 `filter: invert(1)` 将线条反转为浅色，以适应深色页面。
 - 图片周围没有边框、虚线或独立卡片背景。
 - 图片直接悬浮在网页整体背景上。
-- 为抵消原图四周透明留白，显示宽度会适度大于内容列。
-- 动画只作用于整张图片的 `transform`，包含轻微移动、缩放和旋转。
+- 图片容器的实际布局宽度不超过内容列；为抵消原图四周透明留白，图片在 `transform` 动画中视觉放大。
+- 动画只作用于整张图片的 `transform`，包含轻微移动、缩放和旋转，不使用超过 100% 的容器宽度。
 - 不使用 Canvas、视频、滤镜动画或 JavaScript 定时器。
 - `prefers-reduced-motion: reduce` 下停止动画。
 
@@ -383,6 +388,12 @@ game: {
 - 移动端设置页的删除按钮紧邻“参与”复选框左侧。
 
 全局已经使用 `overflow-x: hidden` 和 `overflow-x: clip` 作为保护，但继续开发时仍应修复实际溢出的组件，不要只依赖裁切掩盖问题。
+
+已修复过的移动端溢出问题：
+
+- `html` 和 `body` 必须保持 `width: 100%` 与 `max-width: 100%`，不得为标题栏按钮人为减去固定宽度，否则会在右侧留下长条空白。
+- `.setup-layout` 和 `.intro-panel` 已设置 `min-width: 0`，允许 Grid 内容正常收缩。
+- `.pirate-scene` 使用 `width: 100%` 和有限 `max-width`，移动端不得恢复 `135%` 或 `145%` 宽度。
 
 ## 13. 视觉设计
 
@@ -425,12 +436,10 @@ README 中也列出了 `python3 -m http.server 8080`，但当前这台 Mac 的 `
 - Settings → Pages → Deploy from a branch。
 - HTML、CSS、JS 和 `ship.png` 都使用静态资源。
 
-已知注意项：
+资源路径注意项：
 
-- `config.js` 当前 `faviconPath` 是 `/asset/favicon-compressed.png`，开头的 `/` 表示站点根路径。
-- 如果部署为 `https://user.github.io/repository/` 形式的项目页，该绝对路径可能指向错误位置。
-- 若要保证子路径部署，应考虑改为 `asset/favicon-compressed.png`。
-- 这是当前已识别但尚未在本轮修改的配置风险。
+- `config.js` 当前 `faviconPath` 使用 `asset/favicon-compressed.png` 相对路径。
+- 该路径同时兼容自定义域名和 `https://user.github.io/repository/` 形式的项目页。
 
 ## 16. 已进行的验证
 
@@ -447,6 +456,8 @@ README 中也列出了 `python3 -m http.server 8080`，但当前这台 Mac 的 `
 - 检查 CSS 花括号数量是否匹配。
 - 检查页面是否遗留绝对脚本或样式资源路径。
 - 通过系统图像接口确认 `ship.png` 有透明通道，实心线条接近黑色；反色方案有效。
+- 确认 `favicon-compressed.png` 的边角像素为透明，标题栏头像不会由素材引入白色背景。
+- 检查移动端海盗船容器不再使用超过 100% 的布局宽度。
 
 当前环境缺少可直接运行的 Node.js，因此没有执行 npm、Playwright 或 jsdom 测试。
 
@@ -499,5 +510,8 @@ README 中也列出了 `python3 -m http.server 8080`，但当前这台 Mac 的 `
 14. 移除顶部自动保存状态展示，但保留自动保存。
 15. 将项目目录重命名为 `pointpad`。
 16. 在 README 中明确这是一个纯 Vibe Coding 项目。
+17. 在标题栏右侧增加可配置的 GitHub 入口，并使用配置中的网页头像作为左侧品牌图标。
+18. 修复头像 PNG 透明背景，调大头像尺寸，并确保 GitHub 图标使用内联 SVG 稳定显示。
+19. 修复移动端右侧长条空白，恢复页面 100% 宽度，并将海盗船放大从布局宽度调整为 CSS 变换。
 
 后续新 AI 应以本文“当前实现”和“必须保持”的内容为准，而不是恢复早期已被推翻的方案。

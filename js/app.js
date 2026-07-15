@@ -18,6 +18,8 @@
     gameView: $("#game-view"),
     resultsView: $("#results-view"),
     siteName: $("#site-name"),
+    siteAvatar: $("#site-avatar"),
+    githubLink: $("#github-link"),
     gameNameInput: $("#game-name-input"),
     setupPlayerList: $("#setup-player-list"),
     playerCount: $("#player-count"),
@@ -189,15 +191,23 @@
   function setSiteConfiguration() {
     document.title = config.site.browserTitle;
     elements.siteName.textContent = config.site.headerTitle;
+    if (config.site.githubUrl) {
+      elements.githubLink.href = config.site.githubUrl;
+    } else {
+      elements.githubLink.hidden = true;
+    }
     const description = $('meta[name="description"]');
     const themeColor = $('meta[name="theme-color"]');
     if (description) description.content = config.site.description;
     if (themeColor) themeColor.content = config.site.themeColor;
     if (config.site.faviconPath) {
+      elements.siteAvatar.src = config.site.faviconPath;
       const link = document.createElement("link");
       link.rel = "icon";
       link.href = config.site.faviconPath;
       document.head.append(link);
+    } else {
+      elements.siteAvatar.closest(".brand-mark").hidden = true;
     }
   }
 
