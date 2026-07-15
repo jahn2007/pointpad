@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#10131a">
+    <meta name="description" content="一个离线可用、按轮累加的多人桌游计分板。">
+    <title>桌游计分板</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/app.css">
+  </head>
+  <body>
+    <noscript>
+      <div class="noscript">此计分板需要启用 JavaScript 才能使用。</div>
+    </noscript>
+
+    <div class="app-shell">
+      <header class="site-header">
+        <button class="brand" id="brand-button" type="button" aria-label="返回首页">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="img">
+              <rect x="4" y="4" width="24" height="24" rx="8"></rect>
+              <path d="M10 20.5l4-4 3 3 5-6"></path>
+              <circle cx="10" cy="20.5" r="1.5"></circle>
+              <circle cx="14" cy="16.5" r="1.5"></circle>
+              <circle cx="17" cy="19.5" r="1.5"></circle>
+              <circle cx="22" cy="13.5" r="1.5"></circle>
+            </svg>
+          </span>
+          <span id="site-name">桌游计分板</span>
+        </button>
+      </header>
+
+      <main>
+        <section class="view setup-view" id="setup-view">
+          <div class="setup-layout">
+            <div class="intro-panel">
+              <div class="pirate-scene">
+                <img class="pirate-ship-image" src="asset/ship.png" alt="一艘驶向观看者的手绘海盗船" width="1536" height="1024">
+              </div>
+            </div>
+
+            <div class="setup-card">
+              <div class="resume-banner" id="resume-banner" hidden>
+                <div>
+                  <strong>发现未完成的对局</strong>
+                  <span id="resume-detail"></span>
+                </div>
+                <div class="resume-actions">
+                  <button class="button button-primary button-small" id="resume-game" type="button">继续对局</button>
+                  <button class="button button-ghost button-small" id="discard-game" type="button">放弃</button>
+                </div>
+              </div>
+
+              <div class="section-heading">
+                <div>
+                  <p class="kicker">新对局</p>
+                  <h2>谁来参加？</h2>
+                </div>
+                <span class="player-count" id="player-count">4 位玩家</span>
+              </div>
+
+              <label class="field">
+                <span>对局名称</span>
+                <input id="game-name-input" type="text" maxlength="40" autocomplete="off" placeholder="例如：周五桌游夜">
+              </label>
+
+              <div class="players-editor" id="setup-player-list" aria-label="玩家列表"></div>
+
+              <div class="setup-actions">
+                <button class="button button-secondary" id="add-player" type="button">
+                  <span aria-hidden="true">＋</span> 添加玩家
+                </button>
+                <button class="button button-primary button-large" id="start-game" type="button">
+                  开始计分 <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view game-view" id="game-view" hidden>
+          <div class="game-toolbar">
+            <div>
+              <p class="kicker">正在计分</p>
+              <h1 id="current-game-name"></h1>
+            </div>
+            <div class="round-badge">
+              <span>当前</span>
+              <strong id="current-round">第 1 轮</strong>
+            </div>
+            <div class="toolbar-actions">
+              <button class="icon-button" id="open-history" type="button" title="历史记录" aria-label="打开历史记录">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5M12 7v5l3 2"></path></svg>
+              </button>
+              <button class="icon-button" id="open-settings" type="button" title="对局设置" aria-label="打开对局设置">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path></svg>
+              </button>
+              <button class="button button-primary button-large" id="end-game" type="button">结束对局</button>
+            </div>
+          </div>
+
+          <div class="game-summary" id="game-summary"></div>
+          <div class="score-grid" id="score-grid"></div>
+
+          <div class="score-dock" aria-label="本轮操作">
+            <div class="dock-meta">
+              <span>本轮待提交</span>
+              <strong id="draft-total">合计 0 分</strong>
+            </div>
+            <div class="dock-actions">
+              <button class="button button-ghost" id="undo-action" type="button" disabled>撤销</button>
+              <button class="button button-secondary" id="clear-round" type="button">清空本轮</button>
+              <button class="button button-primary button-large" id="submit-round" type="button">提交第 1 轮</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="view results-view" id="results-view" hidden>
+          <div class="results-hero">
+            <p class="eyebrow">GAME OVER</p>
+            <p class="trophy" aria-hidden="true">✦</p>
+            <h1 id="winner-title">本局冠军</h1>
+            <p id="winner-copy"></p>
+          </div>
+          <div class="podium" id="podium"></div>
+          <section class="results-card">
+            <div class="section-heading">
+              <div>
+                <p class="kicker">最终成绩</p>
+                <h2 id="results-game-name"></h2>
+              </div>
+              <span id="results-round-count"></span>
+            </div>
+            <div class="table-wrap" id="results-table"></div>
+          </section>
+          <div class="results-actions">
+            <button class="button button-ghost" id="return-game" type="button">返回修改</button>
+            <button class="button button-secondary" id="restart-same" type="button">相同玩家再来一局</button>
+            <button class="button button-primary" id="create-new" type="button">创建新对局</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="modal modal-wide" id="history-dialog">
+      <form method="dialog" class="modal-frame" id="history-form">
+        <div class="modal-header">
+          <div>
+            <p class="kicker">逐轮明细</p>
+            <h2>历史记录</h2>
+          </div>
+          <button class="close-button" value="cancel" aria-label="关闭历史记录">×</button>
+        </div>
+        <div class="modal-body" id="history-content"></div>
+        <div class="modal-footer">
+          <p class="modal-hint">修改后会自动重新计算总分和排名。</p>
+          <button class="button button-primary" id="save-history" value="default">保存修改</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="settings-dialog">
+      <form method="dialog" class="modal-frame" id="settings-form">
+        <div class="modal-header">
+          <div>
+            <p class="kicker">当前对局</p>
+            <h2>对局设置</h2>
+          </div>
+          <button class="close-button" value="cancel" aria-label="关闭设置">×</button>
+        </div>
+        <div class="modal-body">
+          <label class="field">
+            <span>对局名称</span>
+            <input id="settings-game-name" name="gameName" type="text" maxlength="40">
+          </label>
+          <div class="settings-title">
+            <span>玩家</span>
+            <small>可以调整顺序、暂停参与或永久删除</small>
+          </div>
+          <div class="settings-player-list" id="settings-player-list"></div>
+          <button class="button button-secondary button-full" id="settings-add-player" type="button">＋ 添加玩家</button>
+          <div class="decimal-settings">
+            <label class="settings-option">
+              <span>
+                <strong>允许小数分数</strong>
+                <small>关闭时，已有小数分数会四舍五入为整数</small>
+              </span>
+              <input id="settings-allow-decimals" type="checkbox">
+            </label>
+            <label class="decimal-places-field">
+              <span>
+                <strong>小数位数</strong>
+                <small>累计和显示时保留的最大小数位</small>
+              </span>
+              <input id="settings-decimal-places" type="number" inputmode="numeric" min="1" max="4" step="1">
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="button button-ghost" value="cancel">取消</button>
+          <button class="button button-primary" id="save-settings" value="default">保存设置</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal modal-confirm" id="confirm-dialog">
+      <form method="dialog" class="modal-frame">
+        <div class="modal-body confirm-body">
+          <span class="confirm-icon" aria-hidden="true">!</span>
+          <h2 id="confirm-title">确认操作</h2>
+          <p id="confirm-message"></p>
+        </div>
+        <div class="modal-footer">
+          <button class="button button-ghost" value="cancel">取消</button>
+          <button class="button button-danger" id="confirm-action" value="confirm">确认</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/scoring.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
