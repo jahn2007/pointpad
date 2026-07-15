@@ -162,8 +162,9 @@ input {
   justify-content: center;
   gap: 7px;
   padding: 0 11px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 11px;
+  background: rgba(255, 255, 255, 0.035);
   color: var(--faint);
   text-decoration: none;
   transition: 150ms ease;
@@ -172,8 +173,8 @@ input {
 }
 
 .header-github:hover {
-  border-color: var(--line-strong);
-  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.07);
   color: var(--text);
 }
 

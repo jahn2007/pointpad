@@ -45,7 +45,7 @@ python3 -m http.server 8080
 - `site.browserTitle`：浏览器标签页标题
 - `site.headerTitle`：网页最上端显示的品牌标题
 - `site.description`：网页描述
-- `site.faviconPath`：浏览器图标和标题栏左侧头像；留空表示隐藏头像
+- `site.faviconPath`：浏览器图标和标题栏左侧头像；留空表示隐藏头像，更新图片后可修改路径末尾的 `?v=` 版本值刷新缓存
 - `site.githubUrl`：标题栏右侧 GitHub 链接；留空表示隐藏入口
 - `site.themeColor`：浏览器主题色
 - `game.defaultName`：默认对局名称
@@ -61,6 +61,8 @@ python3 -m http.server 8080
 首页海盗船使用 `asset/ship.png`，原图透明背景上的深色线条通过 CSS 反色显示，并使用低开销的位移动画。操作系统开启“减少动态效果”后动画会自动停用。
 
 页面采用响应式布局；低宽度设备会重排工具栏、底部操作按钮和设置项，成绩表等宽内容则在自身容器内滚动，不会让整个页面产生横向滚动。海盗船容器始终限制在页面宽度内，仅通过不参与布局计算的 CSS 变换放大画面。
+
+GitHub Pages 或自定义域名前的 CDN 可能缓存 CSS、JavaScript 和图片。`index.html` 中的静态资源带有 `?v=` 版本参数；发布新的静态资源后应同步递增该值，并与 `site.faviconPath` 中的图标版本保持一致。
 
 如果日后修改了已上线站点的数据结构，建议同时更换 `storage.key`，避免旧版数据和新版代码不兼容。
 

@@ -11,7 +11,7 @@ window.SCOREKEEPER_CONFIG = Object.freeze({
     headerTitle: "A Mirror送给海盗们的桌游计分板",
     shortName: "计分板",
     description: "一个纯Vibe Coding的项目",
-    faviconPath: "asset/favicon-compressed.png",
+    faviconPath: "asset/favicon-compressed.png?v=20260715-2",
     // 标题栏右侧 GitHub 链接（留空则隐藏）
     githubUrl: "https://github.com/jahn2007/pointpad",
     themeColor: "#10131a"

@@ -82,7 +82,7 @@ site: {
   headerTitle: "A Mirror送给海盗们的桌游计分板",
   shortName: "计分板",
   description: "一个纯Vibe Coding的项目",
-  faviconPath: "asset/favicon-compressed.png",
+  faviconPath: "asset/favicon-compressed.png?v=20260715-2",
   githubUrl: "https://github.com/jahn2007/pointpad",
   themeColor: "#10131a"
 }
@@ -96,6 +96,7 @@ site: {
 - `githubUrl` 控制标题栏右侧 GitHub 图标的跳转地址，留空时隐藏入口。
 - 当前 `favicon-compressed.png` 保留 PNG 透明通道，头像不应再出现白色方形背景。
 - 标题栏头像桌面端为 40px，移动端为 36px。GitHub 入口桌面端显示图标和文字，移动端仅显示图标。
+- GitHub 入口使用始终可见的半透明描边和深色背景，不应仅在 hover 时才显示外框。
 
 游戏参数：
 
@@ -438,8 +439,9 @@ README 中也列出了 `python3 -m http.server 8080`，但当前这台 Mac 的 `
 
 资源路径注意项：
 
-- `config.js` 当前 `faviconPath` 使用 `asset/favicon-compressed.png` 相对路径。
+- `config.js` 当前 `faviconPath` 使用 `asset/favicon-compressed.png?v=20260715-2` 相对路径和缓存版本参数。
 - 该路径同时兼容自定义域名和 `https://user.github.io/repository/` 形式的项目页。
+- `index.html` 中的 CSS 和 JavaScript 同样使用 `?v=20260715-2`。每次更新静态资源并发布时，应递增版本值，避免 GitHub Pages、Cloudflare 或浏览器混用新 HTML 与旧 CSS/JS。
 
 ## 16. 已进行的验证
 
